@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import dotenv from "dotenv";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI, Type } from "@google/genai";
@@ -510,10 +511,57 @@ Return the result STRICTLY as a single JSON object conforming to the schema. Do 
   }
 });
 
+// Helper to resolve the correct Apps Script URL
+function resolveAppsScriptUrl(): string | null {
+  // 1. Check dedicated env variables if they exist and are script.google.com URLs
+  if (process.env.GOOGLE_APPS_SCRIPT_URL && process.env.GOOGLE_APPS_SCRIPT_URL.includes("script.google.com")) {
+    return process.env.GOOGLE_APPS_SCRIPT_URL.trim();
+  }
+  if (process.env.APPS_SCRIPT_URL && process.env.APPS_SCRIPT_URL.includes("script.google.com")) {
+    return process.env.APPS_SCRIPT_URL.trim();
+  }
+
+  // 2. Fallback: Parse the local .env file directly. Since the container overrides APP_URL in the process environment, 
+  // we manually parse .env/env.example to retrieve any Google Apps Script URL specifically written by the user.
+  try {
+    const dotenvPath = path.join(process.cwd(), ".env");
+    if (fs.existsSync(dotenvPath)) {
+      const content = fs.readFileSync(dotenvPath, "utf-8");
+      const matches = content.match(/(?:APP_URL|GOOGLE_APPS_SCRIPT_URL|APPS_SCRIPT_URL)\s*=\s*["']?(https:\/\/script\.google\.com\/[^"'\r\n]+)["']?/);
+      if (matches && matches[1]) {
+        return matches[1].trim();
+      }
+    }
+  } catch (err) {
+    console.error("Failed to parse local .env directly", err);
+  }
+
+  try {
+    const dotenvExamplePath = path.join(process.cwd(), ".env.example");
+    if (fs.existsSync(dotenvExamplePath)) {
+      const content = fs.readFileSync(dotenvExamplePath, "utf-8");
+      const matches = content.match(/(?:APP_URL|GOOGLE_APPS_SCRIPT_URL|APPS_SCRIPT_URL)\s*=\s*["']?(https:\/\/script\.google\.com\/[^"'\r\n]+)["']?/);
+      if (matches && matches[1]) {
+        return matches[1].trim();
+      }
+    }
+  } catch (err) {
+    console.error("Failed to parse local .env.example directly", err);
+  }
+
+  // 3. Fallback, if APP_URL is somehow pointing to script.google.com directly in process.env
+  if (process.env.APP_URL && process.env.APP_URL.includes("script.google.com")) {
+    return process.env.APP_URL.trim();
+  }
+
+  return null;
+}
+
 // Sync helper definition
 async function syncToGoogleAppsScript(report: any) {
-  const appScriptUrl = process.env.APP_URL;
-  if (!appScriptUrl || appScriptUrl.includes("MY_APP_URL") || appScriptUrl.trim() === "" || appScriptUrl.includes("APP_URL=")) {
+  const appScriptUrl = resolveAppsScriptUrl();
+  if (!appScriptUrl) {
+    console.log("[Google Apps Script] Sync skipped: No script.google.com Web App URL found in environment or configs.");
     return;
   }
   
@@ -544,22 +592,22 @@ async function syncToGoogleAppsScript(report: any) {
 
 // GET endpoint to return Apps Script configuration details
 app.get("/api/appscript-status", (req, res) => {
-  const appScriptUrl = process.env.APP_URL;
-  const isConfigured = !!(appScriptUrl && !appScriptUrl.includes("MY_APP_URL") && appScriptUrl.trim() !== "" && !appScriptUrl.includes("APP_URL="));
+  const appScriptUrl = resolveAppsScriptUrl();
+  const isConfigured = !!appScriptUrl;
   
   res.json({
     configured: isConfigured,
-    url: isConfigured ? appScriptUrl : null
+    url: appScriptUrl
   });
 });
 
 // POST endpoint to test mock connections directly to user's Apps Script Web App
 app.post("/api/test-appscript", async (req, res) => {
-  const appScriptUrl = process.env.APP_URL;
-  if (!appScriptUrl || appScriptUrl.includes("MY_APP_URL") || appScriptUrl.trim() === "" || appScriptUrl.includes("APP_URL=")) {
+  const appScriptUrl = resolveAppsScriptUrl();
+  if (!appScriptUrl) {
     return res.json({
       status: "not_configured",
-      message: "Google Apps Script URL is not configured. Please define correct APP_URL variable in settings."
+      message: "Google Apps Script URL is not configured. Please define correct APP_URL or APPS_SCRIPT_URL variable in your settings."
     });
   }
 

@@ -85,20 +85,36 @@ export default function ScannerForm({ onScanComplete, isLoading, setIsLoading, t
 
   const APPS_SCRIPT_CODE = `function doPost(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    // 1. Try to get the active spreadsheet (works if created via 'Extensions > Apps Script' inside the Sheet)
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    
+    // Fallback: If you created this as a standalone script from script.google.com,
+    // uncomment the line below and enter your Google Sheet's ID (found in the sheet browser URL):
+    // var ss = SpreadsheetApp.openById("YOUR_SPREADSHEET_ID_HERE");
+    
+    if (!ss) {
+      throw new Error("No active Spreadsheet found. Make sure this Apps Script is created via 'Extensions > Apps Script' inside your Google Sheet, or use SpreadsheetApp.openById() with your spreadsheet ID.");
+    }
+    
+    var sheet = ss.getSheets()[0] || ss.getActiveSheet();
+    if (!sheet) {
+      throw new Error("Could not find any sheet tab inside your Google Spreadsheet. Please verify that a tab exists.");
+    }
+    
     var data = JSON.parse(e.postData.contents);
     
     // Check if test trigger
     if (data.test) {
       return ContentService.createTextOutput(JSON.stringify({ 
         status: "success", 
-        message: "Successfully connected Google sheet to GapAnalyzer.AI lead tracker!" 
+        message: "Successfully connected to Google Sheet of '" + ss.getName() + "'!" 
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
     // Otherwise add new row with data parameters
     sheet.appendRow([
       new Date(),
+      data.id || "",
       data.name || "",
       data.email || "",
       data.storeUrl || "",

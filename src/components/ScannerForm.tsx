@@ -30,6 +30,9 @@ export default function ScannerForm({ onScanComplete, isLoading, setIsLoading, t
   const [formError, setFormError] = useState("");
   const [pdfDownloaded, setPdfDownloaded] = useState(false);
 
+  const storeHost = storeUrl ? storeUrl.replace(/https?:\/\/(www\.)?/, '').split('/')[0] : "";
+  const compHost = competitorUrl ? competitorUrl.replace(/https?:\/\/(www\.)?/, '').split('/')[0] : "";
+
   // Cycle scanning messages during loading
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -87,231 +90,172 @@ export default function ScannerForm({ onScanComplete, isLoading, setIsLoading, t
       
       {/* LOADING SCREEN POPUP */}
       {isLoading && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-md text-white p-6" id="scanning-loader">
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl text-white p-6" id="scanning-loader">
           <div className="max-w-md w-full text-center space-y-6">
             
-            {/* Spinning Radar Logo */}
-            <div className="relative w-24 h-24 mx-auto flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full border-4 border-blue-500/10 animate-pulse" />
-              <div className="absolute inset-0 rounded-full border-4 border-t-blue-500 border-r-transparent animate-spin" />
-              <div className="bg-slate-900 p-4 rounded-full text-blue-400">
-                <Laptop className="w-8 h-8 animate-bounce" />
+            <div className="relative w-20 h-20 mx-auto flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full border-2 border-amber-500/20 animate-pulse" />
+              <div className="absolute inset-0 rounded-full border-2 border-t-amber-500 border-r-transparent animate-spin" />
+              <div className="bg-zinc-900 p-4 rounded-full text-amber-500">
+                <Zap className="w-6 h-6 animate-bounce" />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <h2 className="text-2xl font-bold tracking-tight">Constructing Gap Audit...</h2>
-              <p className="text-slate-400 text-xs font-mono select-none">
-                Comparing {storeUrl || "your site"} with {competitorUrl || "competitor"}
+            <div className="space-y-1">
+              <h2 className="text-xl font-black uppercase tracking-tighter text-amber-500">Auditing Gaps...</h2>
+              <p className="text-zinc-500 text-[10px] font-mono truncate px-4">
+                {storeHost || "Store"} vs {compHost || "Competitor"}
               </p>
             </div>
 
-            {/* Current step output with check icons */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 text-left font-mono text-xs space-y-3 shadow-2xl">
-              <div>
-                <span className="text-blue-500 font-bold">ANALYZER LOGS:</span>
-                <span className="text-slate-500 float-right">Step {scanStepIndex + 1}/6</span>
-              </div>
-              <div className="space-y-2 border-t border-slate-800 pt-3 h-28 overflow-y-auto">
-                {SCAN_STEPS.slice(0, scanStepIndex).map((step, idx) => (
-                  <div key={idx} className="text-emerald-400 flex items-start gap-2">
-                    <span>✓</span>
-                    <span>{step}</span>
-                  </div>
-                ))}
-                <div className="text-white flex items-start gap-2 animate-pulse">
-                  <span className="text-blue-400">⚡</span>
-                  <span className="text-slate-300 font-semibold">{SCAN_STEPS[scanStepIndex]}</span>
+            <div className="bg-zinc-900/50 border border-amber-900/30 rounded-xl p-4 text-left font-mono text-[10px] space-y-2 shadow-2xl">
+              {SCAN_STEPS.slice(0, scanStepIndex).map((step, idx) => (
+                <div key={idx} className="text-amber-500/60 flex items-start gap-2">
+                  <span>✓</span>
+                  <span>{step}</span>
                 </div>
+              ))}
+              <div className="text-white flex items-start gap-2 animate-pulse">
+                <span className="text-amber-500">⚡</span>
+                <span className="text-amber-500 font-bold">{SCAN_STEPS[scanStepIndex]}</span>
               </div>
             </div>
-
-            <p className="text-slate-500 text-[10px] uppercase tracking-widest leading-relaxed">
-              Gemini model 3.5 is compiling category benchmarks. <br />
-              This takes about 10–15 seconds total.
-            </p>
           </div>
         </div>
       )}
 
-      {/* HERO SECTION MATCHING REQUEST */}
-      <section className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800 relative py-16 px-4 sm:px-6 lg:px-8 text-white text-center select-none overflow-hidden" id="hero-banner">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/15 via-transparent to-transparent opacity-80" />
+      {/* HERO SECTION */}
+      <section className="bg-black border-b border-amber-900/20 relative py-12 px-6 text-white text-center select-none overflow-hidden" id="hero-banner">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-900/10 via-transparent to-transparent" />
         
-        <div className="relative max-w-4xl mx-auto space-y-4">
-          <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/25 rounded-full text-xs font-mono uppercase tracking-wider">
-            <Zap className="w-3.5 h-3.5" /> High-Intensity Auditor
-          </span>
-          
-          <h1 className="text-3xl font-extrabold sm:text-5xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent max-w-3xl mx-auto font-sans">
-            See Exactly What Your Competitor Is Doing That You're Not
+        <div className="relative max-w-xl mx-auto space-y-3">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tighter uppercase leading-none">
+            Outmarket Your <span className="text-amber-500">Competitors</span>
           </h1>
-          <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            Enter your active boutique and a chief competitor URL. We will scan performance ratings, layout gaps, and conversion triggers using Gemini models to construct an on-screen roadmap block.
+          <p className="text-zinc-500 text-xs sm:text-sm font-medium">
+            AI-driven audit of conversion gaps and layout flaws.
           </p>
         </div>
       </section>
 
-      {/* THREE BENTO SHORTCUTS FOR SAMPLES */}
-      <section className="max-w-5xl mx-auto px-4 mt-8" id="quick-presets">
-        <div className="bg-slate-900/40 border border-slate-850 p-4 sm:p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-blue-500/10 text-blue-400 rounded-xl hidden sm:block">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="font-semibold text-sm text-white">Skip the scan form & try immediate showcase?</p>
-              <p className="text-xs text-slate-400">Load high-fidelity visual audits directly in one tap to test performance metrics.</p>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-2 w-full md:w-auto">
+      {/* QUICK SAMPLES */}
+      <section className="max-w-xl mx-auto px-6 -mt-6 relative z-20" id="quick-presets">
+        <div className="bg-zinc-900 border border-amber-900/30 p-4 rounded-2xl flex flex-col gap-3 shadow-2xl">
+          <p className="text-[10px] font-bold text-amber-500 uppercase tracking-widest text-center">One-Tap Showcases</p>
+          <div className="flex gap-2">
             <button
               onClick={() => triggerSample("Fashion")}
-              className="flex-grow md:flex-grow-0 px-4 py-2 border border-slate-800 hover:border-slate-700 bg-slate-900 hover:bg-slate-850 text-xs font-semibold text-slate-200 hover:text-white rounded-xl transition-all cursor-pointer"
+              className="flex-1 px-3 py-2 bg-black border border-amber-900/20 hover:border-amber-500/50 text-[10px] font-bold text-zinc-300 uppercase rounded-xl transition-all cursor-pointer"
             >
-              👗 Fashion Showcase
+              Fashion
             </button>
             <button
               onClick={() => triggerSample("Beauty")}
-              className="flex-grow md:flex-grow-0 px-4 py-2 border border-slate-800 hover:border-slate-700 bg-slate-900 hover:bg-slate-850 text-xs font-semibold text-slate-200 hover:text-white rounded-xl transition-all cursor-pointer"
+              className="flex-1 px-3 py-2 bg-black border border-amber-900/20 hover:border-amber-500/50 text-[10px] font-bold text-zinc-300 uppercase rounded-xl transition-all cursor-pointer"
             >
-              💄 Beauty Showcase
+              Beauty
             </button>
           </div>
         </div>
       </section>
 
-      {/* OVERLAPPING HERO CARD IN FORM */}
-      <section className="max-w-md mx-auto px-4 py-8 relative z-10" id="main-interactive-form">
-        <div className="bg-white text-slate-950 rounded-2xl border border-slate-200 shadow-2xl p-6 sm:p-8 space-y-6">
-          <div className="space-y-1">
-            <h2 className="text-xl font-bold tracking-tight text-slate-900">Analyze My Store — Free</h2>
-            <p className="text-slate-500 text-xs">Complete the secure e-commerce indices to get audited checks.</p>
+      {/* MAIN FORM */}
+      <section className="max-w-md mx-auto px-6 py-8" id="main-interactive-form">
+        <div className="bg-zinc-950 border border-amber-900/30 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl">
+          <div className="text-center">
+            <h2 className="text-lg font-black uppercase text-white tracking-widest">Free Audit</h2>
+            <div className="h-0.5 w-12 bg-amber-500 mx-auto mt-2" />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            
-            {/* Store URL */}
-            <div className="space-y-1.5">
-              <label htmlFor="storeUrl" className="text-xs font-semibold text-slate-700 block">Your Store URL</label>
+            <div className="space-y-4">
               <input
-                id="storeUrl"
                 type="url"
                 required
-                placeholder="https://yourstore.com"
+                placeholder="YOUR STORE URL"
                 value={storeUrl}
                 onChange={(e) => setStoreUrl(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-blue-500 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/10 text-slate-900"
+                className="w-full bg-black border border-amber-900/20 focus:border-amber-500 px-4 py-3 rounded-2xl text-[11px] font-bold uppercase tracking-wider text-amber-500 focus:outline-none transition-all placeholder:text-zinc-700"
               />
-            </div>
-
-            {/* Competitor URL */}
-            <div className="space-y-1.5">
-              <label htmlFor="competitorUrl" className="text-xs font-semibold text-slate-700 block">Competitor URL</label>
               <input
-                id="competitorUrl"
                 type="url"
                 required
-                placeholder="https://competitor.com"
+                placeholder="COMPETITOR URL"
                 value={competitorUrl}
                 onChange={(e) => setCompetitorUrl(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-blue-500 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/10 text-slate-900"
+                className="w-full bg-black border border-amber-900/20 focus:border-amber-500 px-4 py-3 rounded-2xl text-[11px] font-bold uppercase tracking-wider text-amber-500 focus:outline-none transition-all placeholder:text-zinc-700"
               />
-            </div>
-
-            {/* Category selection */}
-            <div className="space-y-1.5">
-              <label htmlFor="category" className="text-xs font-semibold text-slate-700 block">Your Product Category</label>
               <select
-                id="category"
                 required
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 text-slate-800 hover:border-slate-300 focus:border-blue-500 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/10 appearance-none cursor-pointer"
+                className="w-full bg-black border border-amber-900/20 text-zinc-400 focus:border-amber-500 px-4 py-3 rounded-2xl text-[11px] font-bold uppercase tracking-wider focus:outline-none transition-all appearance-none cursor-pointer"
               >
-                <option value="" disabled>Select Your Category</option>
-                <option value="Fashion">Fashion & Apparel</option>
-                <option value="Beauty">Beauty & Cosmetics</option>
-                <option value="Electronics">Electronics & Hardware</option>
-                <option value="Home">Home & Living decor</option>
-                <option value="Other">Other Retail Niche</option>
+                <option value="" disabled>SELECT CATEGORY</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Beauty">Beauty</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Home">Home Decor</option>
               </select>
             </div>
 
-            {/* Contact Name */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <label htmlFor="name" className="text-xs font-semibold text-slate-700 block">Your Name</label>
-                <input
-                  id="name"
-                  type="text"
-                  required
-                  placeholder="Your Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-blue-500 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none text-slate-900"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label htmlFor="email" className="text-xs font-semibold text-slate-700 block">Your Email</label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  placeholder="your@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-blue-500 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none text-slate-900"
-                />
-              </div>
+            <div className="grid grid-cols-2 gap-2">
+              <input
+                type="text"
+                required
+                placeholder="NAME"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full bg-black border border-amber-900/20 focus:border-amber-500 px-4 py-3 rounded-2xl text-[11px] font-bold uppercase tracking-wider text-amber-500 focus:outline-none transition-all placeholder:text-zinc-700"
+              />
+              <input
+                type="email"
+                required
+                placeholder="EMAIL"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-black border border-amber-900/20 focus:border-amber-500 px-4 py-3 rounded-2xl text-[11px] font-bold uppercase tracking-wider text-amber-500 focus:outline-none transition-all placeholder:text-zinc-700"
+              />
             </div>
 
-            {/* Error output */}
             {formError && (
-              <p className="text-xs text-red-600 bg-red-50 border border-red-100 p-2.5 rounded-xl text-center font-medium">
-                ⚠️ {formError}
-              </p>
+              <p className="text-[10px] text-red-500 font-bold uppercase text-center">{formError}</p>
             )}
 
-            {/* Action button */}
             <button
-              id="submitBtn"
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl text-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-blue-500/15"
+              className="w-full bg-amber-600 hover:bg-amber-500 text-black font-black py-4 px-6 rounded-2xl text-xs uppercase tracking-[0.2em] transition-all transform active:scale-95 shadow-xl shadow-amber-500/20 cursor-pointer"
             >
-              <span>Analyze My Store →</span>
+              Start Analysis
             </button>
-
           </form>
         </div>
       </section>
 
-      {/* NEWSLETTER AT FOOT OF CHIP */}
-      <section className="bg-slate-900/40 border-t border-slate-850 py-16 px-4 text-center text-white" id="newsletter-guide">
-        <div className="max-w-2xl mx-auto space-y-6">
-          <div className="inline-flex p-3 bg-blue-500/10 text-blue-400 rounded-full">
-            <CheckSquare className="w-6 h-6" />
+      <section className="bg-black py-12 px-6 text-center" id="newsletter-guide">
+        <div className="max-w-md mx-auto space-y-4">
+          <div className="inline-flex p-3 bg-amber-500/10 text-amber-500 rounded-full mb-2">
+            <CheckSquare className="w-5 h-5" />
           </div>
-          <h2 className="text-2xl font-bold tracking-tight">Need immediate offline reading?</h2>
-          <p className="text-slate-400 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
-            Download our curated E-commerce Conversion Cheat Sheet details detailing the top 50 Shopify tactics to boost cart checkout metrics.
+          <h2 className="text-lg font-black uppercase text-white tracking-widest">Growth Guide</h2>
+          <p className="text-zinc-500 text-[11px] font-medium leading-relaxed">
+            Get our elite 50-point Shopify conversion playbook for offline reading.
           </p>
-          <div className="flex justify-center gap-3">
+          <div className="flex justify-center pt-2">
             {!pdfDownloaded ? (
               <button
                 onClick={() => {
                   setPdfDownloaded(true);
                   setTimeout(() => setPdfDownloaded(false), 6000);
                 }}
-                className="px-6 py-2.5 bg-white text-slate-950 hover:bg-slate-100 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer"
+                className="px-8 py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-amber-500 transition-all cursor-pointer"
               >
-                Download PDF Playbook
+                Download PDF
               </button>
             ) : (
-              <p className="bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 px-5 py-3 rounded-xl text-xs font-semibold max-w-md">
-                ✓ Playbook ready! Browse the <span className="underline">CRO Checklist</span> tab above for a fully interactive checking toolkit!
+              <p className="text-amber-500 text-[10px] font-black uppercase tracking-widest bg-amber-500/10 border border-amber-500/30 px-6 py-3 rounded-xl">
+                Ready! See CRO tab
               </p>
             )}
           </div>

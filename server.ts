@@ -394,6 +394,50 @@ function generateDeterministicAnalysis(storeUrl: string, competitorUrl: string, 
   };
 }
 
+/**
+ * Helper to forward lead details asynchronously to Google Apps Script Web App URL
+ */
+async function sendToAppsScript(data: {
+  storeUrl: string;
+  competitorUrl: string;
+  category: string;
+  name: string;
+  email: string;
+}) {
+  const appsScriptUrl = process.env.APPS_SCRIPT_URL;
+  if (!appsScriptUrl || appsScriptUrl.trim() === "" || appsScriptUrl === "MY_APPS_SCRIPT_URL") {
+    console.log("No Google Apps Script URL (APPS_SCRIPT_URL) configured in env. Skipping background dispatch.");
+    return;
+  }
+
+  console.log(`Forwarding lead to Google Apps Script Web App: ${appsScriptUrl.substring(0, 40)}...`);
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s execution timeout
+
+    const response = await fetch(appsScriptUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+
+    if (response.ok) {
+      console.log(`Lead forwarded successfully to Google Apps Script Web App. HTTP ${response.status}`);
+    } else {
+      console.warn(`Google Apps Script web app responded with status code: ${response.status}`);
+    }
+  } catch (err: any) {
+    if (err.name === 'AbortError') {
+      console.error("Connection timeout: Google Apps Script Web App did not respond within 10 seconds.");
+    } else {
+      console.error("Failed to forward lead to Google Apps Script Web App:", err.message || err);
+    }
+  }
+}
+
 // POST endpoint to handle the gap analysis
 app.post("/api/analyze", async (req, res) => {
   const { storeUrl, competitorUrl, category, name, email } = req.body;
@@ -408,6 +452,10 @@ app.post("/api/analyze", async (req, res) => {
     // If Gemini key is not configured, generate a beautifully customized diagnostic response immediately.
     console.warn("GEMINI_API_KEY is not defined. Falling back to high-fidelity customized deterministic analysis.");
     const mockReport = generateDeterministicAnalysis(storeUrl, competitorUrl, category, name, email);
+    
+    // Forward to Apps Script asynchronously
+    sendToAppsScript({ storeUrl, competitorUrl, category, name, email });
+
     return res.json({
       status: "success",
       sandbox: true,
@@ -479,6 +527,9 @@ Return the result STRICTLY as a single JSON object conforming to the schema. Do 
       timestamp: new Date().toISOString(),
       ...parsedData
     };
+
+    // Forward to Apps Script asynchronously
+    sendToAppsScript({ storeUrl, competitorUrl, category, name, email });
 
     return res.json({
       status: "success",

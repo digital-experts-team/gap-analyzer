@@ -1,0 +1,8 @@
+{
+  "name": "E-commerce Gap Analyzer",
+  "description": "Analyze your e-commerce store against competitor URLs in real-time, detecting CRO, SEO, and visual experience gaps with Gemini AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

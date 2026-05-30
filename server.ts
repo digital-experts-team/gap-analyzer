@@ -394,50 +394,6 @@ function generateDeterministicAnalysis(storeUrl: string, competitorUrl: string, 
   };
 }
 
-/**
- * Helper to forward lead details asynchronously to Google Apps Script Web App URL
- */
-async function sendToAppsScript(data: {
-  storeUrl: string;
-  competitorUrl: string;
-  category: string;
-  name: string;
-  email: string;
-}) {
-  const appsScriptUrl = process.env.APPS_SCRIPT_URL;
-  if (!appsScriptUrl || appsScriptUrl.trim() === "" || appsScriptUrl === "MY_APPS_SCRIPT_URL") {
-    console.log("No Google Apps Script URL (APPS_SCRIPT_URL) configured in env. Skipping background dispatch.");
-    return;
-  }
-
-  console.log(`Forwarding lead to Google Apps Script Web App: ${appsScriptUrl.substring(0, 40)}...`);
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s execution timeout
-
-    const response = await fetch(appsScriptUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-      signal: controller.signal
-    });
-
-    clearTimeout(timeoutId);
-
-    if (response.ok) {
-      console.log(`Lead forwarded successfully to Google Apps Script Web App. HTTP ${response.status}`);
-    } else {
-      console.warn(`Google Apps Script web app responded with status code: ${response.status}`);
-    }
-  } catch (err: any) {
-    if (err.name === 'AbortError') {
-      console.error("Connection timeout: Google Apps Script Web App did not respond within 10 seconds.");
-    } else {
-      console.error("Failed to forward lead to Google Apps Script Web App:", err.message || err);
-    }
-  }
-}
-
 // POST endpoint to handle the gap analysis
 app.post("/api/analyze", async (req, res) => {
   const { storeUrl, competitorUrl, category, name, email } = req.body;
@@ -452,10 +408,6 @@ app.post("/api/analyze", async (req, res) => {
     // If Gemini key is not configured, generate a beautifully customized diagnostic response immediately.
     console.warn("GEMINI_API_KEY is not defined. Falling back to high-fidelity customized deterministic analysis.");
     const mockReport = generateDeterministicAnalysis(storeUrl, competitorUrl, category, name, email);
-    
-    // Forward to Apps Script asynchronously
-    sendToAppsScript({ storeUrl, competitorUrl, category, name, email });
-
     return res.json({
       status: "success",
       sandbox: true,
@@ -528,8 +480,10 @@ Return the result STRICTLY as a single JSON object conforming to the schema. Do 
       ...parsedData
     };
 
-    // Forward to Apps Script asynchronously
-    sendToAppsScript({ storeUrl, competitorUrl, category, name, email });
+    // Sync lead details with Google Apps Script in background (non-blocking)
+    syncToGoogleAppsScript(report).catch(err => {
+      console.error("Failed background Apps Script sync:", err);
+    });
 
     return res.json({
       status: "success",
@@ -541,11 +495,119 @@ Return the result STRICTLY as a single JSON object conforming to the schema. Do 
     console.error("Gemini API error during analysis execution:", error);
     // Use sandbox fallback if API fails post-initialization
     const fallbackReport = generateDeterministicAnalysis(storeUrl, competitorUrl, category, name, email);
+    
+    // Sync fallback lead with Apps Script as well
+    syncToGoogleAppsScript(fallbackReport).catch(err => {
+      console.error("Failed background Apps Script sync (fallback):", err);
+    });
+
     return res.json({
       status: "success",
       sandbox: true,
       error: error.message || "Gemini API query execution issue, falling back safely.",
       data: fallbackReport
+    });
+  }
+});
+
+// Sync helper definition
+async function syncToGoogleAppsScript(report: any) {
+  const appScriptUrl = process.env.APP_URL;
+  if (!appScriptUrl || appScriptUrl.includes("MY_APP_URL") || appScriptUrl.trim() === "" || appScriptUrl.includes("APP_URL=")) {
+    return;
+  }
+  
+  try {
+    const payload = {
+      name: report.input.name,
+      email: report.input.email,
+      storeUrl: report.input.storeUrl,
+      competitorUrl: report.input.competitorUrl,
+      category: report.input.category,
+      yourScore: report.overallScore.yourStore,
+      competitorScore: report.overallScore.competitorStore,
+      timestamp: report.timestamp,
+      id: report.id
+    };
+
+    console.log(`[Google Apps Script] Syncing lead details to ${appScriptUrl}`);
+    const response = await fetch(appScriptUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    console.log(`[Google Apps Script] Response received with status ${response.status}`);
+  } catch (err) {
+    console.error("[Google Apps Script] Error during sync:", err);
+  }
+}
+
+// GET endpoint to return Apps Script configuration details
+app.get("/api/appscript-status", (req, res) => {
+  const appScriptUrl = process.env.APP_URL;
+  const isConfigured = !!(appScriptUrl && !appScriptUrl.includes("MY_APP_URL") && appScriptUrl.trim() !== "" && !appScriptUrl.includes("APP_URL="));
+  
+  res.json({
+    configured: isConfigured,
+    url: isConfigured ? appScriptUrl : null
+  });
+});
+
+// POST endpoint to test mock connections directly to user's Apps Script Web App
+app.post("/api/test-appscript", async (req, res) => {
+  const appScriptUrl = process.env.APP_URL;
+  if (!appScriptUrl || appScriptUrl.includes("MY_APP_URL") || appScriptUrl.trim() === "" || appScriptUrl.includes("APP_URL=")) {
+    return res.json({
+      status: "not_configured",
+      message: "Google Apps Script URL is not configured. Please define correct APP_URL variable in settings."
+    });
+  }
+
+  try {
+    console.log(`Testing query connection directly to: ${appScriptUrl}`);
+    const testPayload = {
+      test: true,
+      message: "Active validation check from GapAnalyzer.AI!",
+      timestamp: new Date().toISOString()
+    };
+
+    const response = await fetch(appScriptUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(testPayload)
+    });
+
+    const status = response.status;
+    let responseText = "";
+    try {
+      responseText = await response.text();
+    } catch (e) {}
+
+    console.log(`Apps Script validation returned code ${status}`);
+
+    if (status >= 200 && status < 400) {
+      return res.json({
+        status: "connected",
+        statusCode: status,
+        url: appScriptUrl,
+        message: "Successfully reached Google Apps Script! Ready to sync conversion leads.",
+        responseSnippet: responseText.slice(0, 150)
+      });
+    } else {
+      return res.json({
+        status: "error",
+        statusCode: status,
+        url: appScriptUrl,
+        message: `Google Apps Script returned an unexpected status code: ${status}`,
+        responseSnippet: responseText.slice(0, 150)
+      });
+    }
+  } catch (error: any) {
+    console.error("Apps Script direct ping warning:", error);
+    return res.json({
+      status: "error",
+      url: appScriptUrl,
+      message: `Failed to link: ${error.message || error}`
     });
   }
 });

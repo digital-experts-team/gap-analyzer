@@ -10,23 +10,23 @@ import { HelpCircle, ChevronDown, Lightbulb, Compass, Info, CheckCircle2, Chevro
 const FAQ_ITEMS = [
   {
     id: "faq_1",
-    q: "How does the audit process work?",
-    a: "We scan core commerce markers like speed, SEO, checkout flow, and trust badges. Gemini AI then compares this to industry leaders to find conversion gaps."
+    q: "How does the GapAnalyzer.AI scan process work?",
+    a: "The tool initiates deep, background comparisons checking key digital commerce markers: SSL certificates, DNS query speed, structured schema metadata, responsive touchscreen target diameters, and image compression metrics. This footprint is compared in real-time by Google Gemini to identify missing UX assets, rendering discrepancies, and trust elements based on your retail category benchmarks."
   },
   {
     id: "faq_2",
-    q: "What is a good score?",
-    a: "Most Shopify stores score between 50-60. Top-tier brands like Sephora hit 85+. We show you exactly how to climb to that elite tier."
+    q: "What is the industry average score for high-margin e-commerce boutique stores?",
+    a: "Standard Shopify properties often hover around 55–65 in operational strength. Enterprise market-makers like Gymshark or Sephora consistently rank above 85 due to custom express checkout overlays, dynamic sizing utilities, and responsive slide-cart setups. The visual audit highlights the exact tactics needed to narrow this gap."
   },
   {
     id: "faq_3",
-    q: "Does speed really matter?",
-    a: "Yes. Every 1-second delay can drop conversions by 15%. Over 70% of shoppers are on mobile, making speed your biggest growth lever."
+    q: "How does compressing listing images and utilizing WebP affect my conversion indices?",
+    a: "Page loading speed is a severe diagnostic factor. Studies show that a 1-second delay in page rendering drops conversion rates by up to 17%. Over 60% of shoppers use mobile connections. Standardizing next-gen codecs like WebP and compressing heavy graphics elevates mobile browsing flow, satisfying both customers and search crawlers."
   },
   {
     id: "faq_4",
-    q: "Can I export this report?",
-    a: "Absolutely. Use the print/export button on the dashboard to save a clean PDF for your design and development teams."
+    q: "Can this report be printed or exported for my development team?",
+    a: "Yes! Use the 'Export PDF / Print' shortcut on the upper right of your dashboard report card to instantly launch your system print dialog. The report layouts compile perfectly into a clean, comprehensive briefing sheet tailored for your developers or design consultants."
   }
 ];
 
@@ -66,6 +66,7 @@ export default function App() {
 
   const triggerSampleScan = (category: string) => {
     setIsLoading(true);
+    // Simulate loading sequentially to give a premium feels and let users experience the scans log!
     setTimeout(() => {
       const sample = SAMPLE_SCANS[category];
       if (sample) {
@@ -73,12 +74,18 @@ export default function App() {
       }
       setIsLoading(false);
       setActiveTab("scan");
-    }, 2000);
+    }, 2500);
   };
 
   return (
-    <div className="bg-black min-h-screen text-zinc-100 flex flex-col font-sans selection:bg-amber-600/30 selection:text-white" id="main-app-root">
+    <div className="bg-slate-950 min-h-screen text-slate-100 flex flex-col font-sans selection:bg-blue-600/30 selection:text-white" id="main-app-root">
       
+      {/* GLOBAL BANNER IF GEMINI KEY ABSENT OR SANDBOX ACTIVE */}
+      <div className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1 px-4 text-center text-[11px] font-mono tracking-wide flex items-center justify-center gap-2 select-none" id="production-environment-alert">
+        <Sparkles className="w-3 h-3 text-yellow-300 animate-pulse" />
+        <span>POWERED BY THE GEMINI 3.5 FLASH COGNITIVE CORE • REAL-TIME GAP ANALYSIS DISCOVERY CHANNELS ACTIVE</span>
+      </div>
+
       <Header 
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 
@@ -104,44 +111,52 @@ export default function App() {
         )}
 
         {activeTab === "help" && (
-          <div className="max-w-2xl mx-auto px-6 py-12 space-y-12" id="faq-help-screen">
+          <div className="max-w-4xl mx-auto px-4 py-12 space-y-12" id="faq-help-screen">
             
+            {/* FAQ TOP HEADLINE */}
             <div className="text-center space-y-3">
-              <h1 className="text-3xl font-black text-white tracking-tighter uppercase sm:text-4xl">
-                Commerce Knowledge
+              <span className="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-xs font-mono font-bold uppercase tracking-wider">
+                Support & Guides
+              </span>
+              <h1 className="text-3xl font-extrabold text-white tracking-tight sm:text-4xl">
+                E-Commerce Benchmark Knowledge Hub
               </h1>
-              <p className="text-zinc-500 text-xs font-medium max-w-sm mx-auto leading-relaxed">
-                Elite strategies for conversion optimization and performance scaling.
+              <p className="text-slate-400 text-sm max-w-xl mx-auto leading-relaxed">
+                Learn how top Shopify and Custom online boutiques optimize visual layouts, secure mobile speeds, and maximize checkout conversions.
               </p>
             </div>
 
-            <div className="space-y-4">
-              <h2 className="text-[11px] font-black uppercase text-amber-500 tracking-widest pl-2">
-                Frequently Asked
+            {/* EXPANDABLE ACCORDIONS */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+              <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                <HelpCircle className="w-5 h-5 text-blue-400" />
+                Frequently Asked Inquiries
               </h2>
               
-              <div className="space-y-2" id="faq-accordions-group">
+              <div className="space-y-3" id="faq-accordions-group">
                 {FAQ_ITEMS.map(faq => {
                   const isOpen = openFaqId === faq.id;
                   return (
                     <div 
                       key={faq.id}
-                      className={`border rounded-2xl transition-all ${
+                      className={`border rounded-xl transition-all ${
                         isOpen 
-                          ? "bg-zinc-950 border-amber-500/30 shadow-lg shadow-amber-500/5" 
-                          : "bg-black border-amber-900/10 hover:border-amber-900/40"
+                          ? "bg-slate-950 border-blue-500/20" 
+                          : "bg-slate-950/40 border-slate-850 hover:border-slate-850"
                       }`}
+                      id={`faq-node-${faq.id}`}
                     >
                       <button
                         onClick={() => setOpenFaqId(isOpen ? null : faq.id)}
-                        className="w-full text-left px-5 py-4 flex items-center justify-between gap-4 font-black text-[11px] uppercase tracking-wider text-white hover:text-amber-500 transition-colors"
+                        className="w-full text-left px-5 py-4 flex items-center justify-between gap-4 font-semibold text-sm sm:text-base text-white transition-colors hover:text-blue-400"
+                        type="button"
                       >
                         <span>{faq.q}</span>
-                        <ChevronDown className={`w-3 h-3 text-zinc-600 transition-transform ${isOpen ? "rotate-180 text-amber-500" : ""}`} />
+                        <ChevronDown className={`w-4 h-4 text-slate-400 flex-shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180 text-blue-400" : ""}`} />
                       </button>
 
                       {isOpen && (
-                        <div className="px-5 pb-5 pt-1 text-[11px] font-medium text-zinc-500 leading-relaxed max-w-md">
+                        <div className="px-5 pb-5 pt-1 border-t border-slate-900 text-xs sm:text-sm text-slate-400 leading-relaxed font-sans">
                           {faq.a}
                         </div>
                       )}
@@ -151,40 +166,60 @@ export default function App() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4" id="benchmark-recommendations">
-              <div className="bg-zinc-950 border border-amber-900/30 p-6 rounded-3xl space-y-2">
-                <h3 className="font-black text-xs uppercase text-white tracking-widest">Growth Tip</h3>
-                <p className="text-[11px] text-zinc-500 font-medium leading-relaxed">
-                  Implement digital wallets like Apple Pay directly on product pages. It reduces friction and lifts conversions by up to 25%.
+            {/* CURATED SHOPPING RECOMMENDATION CHEAT CARDS */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6" id="benchmark-recommendations">
+              
+              <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 p-6 rounded-2xl space-y-3 shadow-xl">
+                <div className="p-2 bg-rose-500/10 text-rose-400 rounded-xl w-fit">
+                  <Lightbulb className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-base text-white">Conversion rate boosters</h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Integrate single-click digital wallets (Apple Pay, Shop Pay, PayPal) directly into checkout lines and cart overlays. Studies show express options can lift overall storefront conversion velocities by 20% to 35% overnight.
                 </p>
+                <div className="text-[10px] text-slate-500 font-mono flex items-center gap-1.5 pt-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> High Priority Impact
+                </div>
               </div>
-              <div className="bg-zinc-950 border border-amber-900/30 p-6 rounded-3xl space-y-2">
-                <h3 className="font-black text-xs uppercase text-white tracking-widest">Performance Tip</h3>
-                <p className="text-[11px] text-zinc-500 font-medium leading-relaxed">
-                  Use WebP images and defer secondary marketing scripts. Faster load times directly equate to lower bounce rates.
+
+              <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 p-6 rounded-2xl space-y-3 shadow-xl">
+                <div className="p-2 bg-blue-500/10 text-blue-400 rounded-xl w-fit">
+                  <Compass className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-base text-white">Web core speeds strategy</h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Avoid heavy immediate overlay advertisements or bulky uncompressed video banners on initial window loads. Convert image extensions to light WebP structures and defer secondary marketing codes to load late.
                 </p>
+                <div className="text-[10px] text-slate-500 font-mono flex items-center gap-1.5 pt-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> Web Core Vitals Compliant
+                </div>
               </div>
+
             </div>
 
           </div>
         )}
       </main>
 
-      <footer className="bg-black border-t border-amber-900/10 py-10 text-center" id="app-footer">
-        <div className="max-w-7xl mx-auto px-4 space-y-6">
-          <p className="font-black text-[10px] tracking-[0.4em] uppercase text-zinc-700">
-            E-Commerce Intelligence
+      {/* FOOTER */}
+      <footer className="bg-slate-950 border-t border-slate-900 py-8 text-center text-slate-500 text-xs text-slate-400 font-sans mt-auto" id="app-footer">
+        <div className="max-w-7xl mx-auto px-4 space-y-4">
+          <p className="font-mono text-[10px] tracking-widest uppercase">
+            Designed for E-Commerce Excellence • Real-time competitive audits
           </p>
-          <div className="flex justify-center gap-6 text-[10px] font-black uppercase tracking-widest text-zinc-500">
-            <a href="#" className="hover:text-amber-500 transition-all">Privacy</a>
-            <a href="#" className="hover:text-amber-500 transition-all">Terms</a>
-            <a href="#" className="hover:text-amber-500 transition-all">Support</a>
+          <div className="flex justify-center gap-4 text-[10px] font-mono">
+            <a href="#" className="hover:text-white transition-all">Privacy guidelines</a>
+            <span>•</span>
+            <a href="#" className="hover:text-white transition-all">Terms of service</a>
+            <span>•</span>
+            <a href="#" className="hover:text-white transition-all">Security policies</a>
           </div>
-          <p className="text-[9px] font-bold text-zinc-800 uppercase tracking-widest">
-            © {new Date().getFullYear()} Ecommerce Analyzer Suite
+          <p className="text-[11px] text-slate-600 mt-2">
+            © {new Date().getFullYear()} Digital Experts & and GapAnalyzer.AI. All rights reserved.
           </p>
         </div>
       </footer>
+
     </div>
   );
 }

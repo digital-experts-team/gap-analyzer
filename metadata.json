@@ -1,6 +1,6 @@
 {
-  "name": "ECOMMERCE WEBSITE ANALYIZER",
-  "description": "Premium black and gold e-commerce gap analysis tool for lightning-fast store audits.",
+  "name": "E-commerce Gap Analyzer",
+  "description": "Analyze your e-commerce store against competitor URLs in real-time, detecting CRO, SEO, and visual experience gaps with Gemini AI.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

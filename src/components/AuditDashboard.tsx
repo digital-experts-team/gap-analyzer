@@ -1,10 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { animate, motion } from "motion/react";
 import { AnalysisResult, AnalysisGap } from "../types";
 import { 
   ArrowLeft, RefreshCw, AlertTriangle, CheckSquare, Sparkles, 
   ChevronRight, Calendar, ArrowUpRight, TrendingUp, HelpCircle, 
   Info, Cpu, Star, Gauge, Printer, Compass, Layers, CheckCircle2 
 } from "lucide-react";
+
+interface AnimatedScoreNumberProps {
+  value: number;
+  className?: string;
+}
+
+function AnimatedScoreNumber({ value, className = "" }: AnimatedScoreNumberProps) {
+  const nodeRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const node = nodeRef.current;
+    if (!node) return;
+
+    const controls = animate(0, value, {
+      duration: 1.5,
+      ease: "easeOut",
+      onUpdate(val) {
+        node.textContent = Math.round(val).toString();
+      }
+    });
+
+    return () => controls.stop();
+  }, [value]);
+
+  return <span ref={nodeRef} className={className}>0</span>;
+}
 
 interface AuditDashboardProps {
   result: AnalysisResult;
@@ -100,11 +127,16 @@ export default function AuditDashboard({ result, onReset }: AuditDashboardProps)
                 <div className="bg-slate-950/60 border border-slate-850/60 p-4 rounded-xl space-y-2 relative">
                   <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">Your Core Store Strength</span>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-black text-rose-500">{result.overallScore.yourStore}</span>
+                    <AnimatedScoreNumber value={result.overallScore.yourStore} className="text-5xl font-black text-rose-500" />
                     <span className="text-slate-500 text-sm">/ 100</span>
                   </div>
                   <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                    <div className="bg-rose-500 h-full rounded-full" style={{ width: `${result.overallScore.yourStore}%` }} />
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      animate={{ width: `${result.overallScore.yourStore}%` }}
+                      transition={{ duration: 1.5, ease: "easeOut" }}
+                      className="bg-rose-500 h-full rounded-full" 
+                    />
                   </div>
                   <p className="text-[11px] text-slate-400 leading-relaxed font-sans mt-2 truncate">
                     {storeHost}
@@ -115,11 +147,16 @@ export default function AuditDashboard({ result, onReset }: AuditDashboardProps)
                 <div className="bg-slate-950/60 border border-slate-850/60 p-4 rounded-xl space-y-2 relative">
                   <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">Competitor Index Rating</span>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-black text-emerald-400">{result.overallScore.competitorStore}</span>
+                    <AnimatedScoreNumber value={result.overallScore.competitorStore} className="text-5xl font-black text-emerald-400" />
                     <span className="text-slate-500 text-sm">/ 100</span>
                   </div>
                   <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                    <div className="bg-emerald-400 h-full rounded-full" style={{ width: `${result.overallScore.competitorStore}%` }} />
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      animate={{ width: `${result.overallScore.competitorStore}%` }}
+                      transition={{ duration: 1.5, ease: "easeOut" }}
+                      className="bg-emerald-400 h-full rounded-full" 
+                    />
                   </div>
                   <p className="text-[11px] text-slate-400 leading-relaxed font-sans mt-2 truncate">
                     {competitorHost}

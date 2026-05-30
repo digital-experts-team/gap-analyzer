@@ -162,6 +162,87 @@ export const SAMPLE_SCANS: Record<string, AnalysisResult> = {
       ]
     },
     summary: "Elena, integrating strong formulation transparency badges and subscription channels will stabilize your beauty brand's retention metrics. Buyers need clarity on materials to build skincare confidence."
+  },
+  Food: {
+    id: "sample_food",
+    timestamp: "2026-05-30T00:00:00Z",
+    input: {
+      storeUrl: "https://yourorganicbites.com",
+      competitorUrl: "https://athleticgreens.com",
+      category: "Food",
+      name: "Marcus Aurelius",
+      email: "marcus@yourorganicbites.com"
+    },
+    overallScore: {
+      yourStore: 63,
+      competitorStore: 92
+    },
+    metrics: {
+      cro: {
+        mine: 59,
+        theirs: 94,
+        feedback: "Your PDP lacks bundle builders, volume-discount rules, and flavor selectors. Athletic Greens implements persistent subscribe-and-save incentives with single-tap express billing."
+      },
+      seo: {
+        mine: 71,
+        theirs: 90,
+        feedback: "Athletic Greens ranks extremely high on nutritional keywords via comprehensive, medical-expert-reviewed scientific reference sheets and highly search-optimized ingredient detail listings. Your site lacks schema markup."
+      },
+      visuals: {
+        mine: 60,
+        theirs: 92,
+        feedback: "Athletic Greens features custom interactive sliding charts for vitamin absorption metrics and video testimonials of professional world athletes. Your site features text-heavy static rows."
+      },
+      trust: {
+        mine: 62,
+        theirs: 93,
+        feedback: "The competitor displays FDA compliance labels, NSF Certified for Sport badges, and direct ingredient sourcing tables. Your site relies on text-only nutrition promises without badges."
+      }
+    },
+    keyGaps: [
+      {
+        area: "Dynamic Taste & Bundle Selector",
+        severity: "High",
+        description: "Ordering consumables requires selecting flavor packages and package counts. Your product listings force users to navigate single products. Competitor utilizes a high-contrast radio-button bundle grid on PDP.",
+        yourStatus: "Flat dropdown options for basic flavor selections.",
+        competitorStatus: "Polished button swatches showing bundle discount tiers (e.g. Save 15% on 30-serving travel packs).",
+        impactScore: 92,
+        actionItem: "Implement a visual bundler widget highlighting pack sizing, pricing savings, and immediate gift additions."
+      },
+      {
+        area: "FDA & Third-Party Lab Testing Badges",
+        severity: "High",
+        description: "Food and dietary buyers seek maximum safety verification. The competitor features prominent NSF/cGMP certification circles under add-to-cart buttons. Your store hides compliance lists in secondary subpages.",
+        yourStatus: "Compliance notes mentioned only inside small print footer text.",
+        competitorStatus: "Verified third-party purity seals, GMO-free certifications, and FDA facility registries proudly displayed.",
+        impactScore: 88,
+        actionItem: "Add 3-4 custom formulation/safety badges with hover detail descriptions adjacent to buy button."
+      },
+      {
+        area: "Periodic Subscriptions & Delivery Schedules",
+        severity: "Medium",
+        description: "Consumable items decay and need recurring delivery. The competitor has 80% subscription retention with easy automatic intervals. Your site lacks subscribe triggers.",
+        yourStatus: "No dynamic subscription option - only one-time checkout.",
+        competitorStatus: "Subscribe & Save discounts (15% off) with flexible delivery schedules (30, 45 or 60 days).",
+        impactScore: 81,
+        actionItem: "Launch an App-integrated subscription widget allowing flexible monthly replenishment intervals."
+      }
+    ],
+    roadmap: {
+      immediate: [
+        "Incorporate nutritional verification badges and dietary tags (Vegan, Keto, Gluten-Free) on header slides.",
+        "Add an express Subscribe-and-Save toggle directly on product page layouts."
+      ],
+      medium: [
+        "Create standard bundle options (Starter Pack, Multi-Flavor Pack) with instant savings labels.",
+        "Include rich JSON-LD Product schema with nutritional details and ingredient safety lists for search crawlers."
+      ],
+      longTerm: [
+        "Integrate an interactive, step-by-step dietary assistant advisor quiz helper.",
+        "Set up automated post-delivery replenishment reminders asking for review submissions with pictures."
+      ]
+    },
+    summary: "Marcus, implementing dietary and compliance certification badges paired with high-impact bundle subscribe-and-save incentives will turn your organic food brand into a recurring cash cow. Trust is primary for food buyers."
   }
 };
 

@@ -195,387 +195,334 @@ function doGet(e) {
   };
 
   return (
-    <div id="scanner-form-container">
+    <div id="scanner-form-container" className="bg-[#040201] text-white min-h-screen">
       
       {/* LOADING SCREEN POPUP */}
       {isLoading && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-md text-white p-6" id="scanning-loader">
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#040201]/95 backdrop-blur-md text-white p-6" id="scanning-loader">
           <div className="max-w-md w-full text-center space-y-6">
             
             {/* Spinning Radar Logo */}
             <div className="relative w-24 h-24 mx-auto flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full border-4 border-blue-500/10 animate-pulse" />
-              <div className="absolute inset-0 rounded-full border-4 border-t-blue-500 border-r-transparent animate-spin" />
-              <div className="bg-slate-900 p-4 rounded-full text-blue-400">
+              <div className="absolute inset-0 rounded-full border-4 border-[#f97316]/10 animate-pulse" />
+              <div className="absolute inset-0 rounded-full border-4 border-t-[#f97316] border-r-transparent animate-spin" />
+              <div className="bg-[#0c0a09] p-4 rounded-full text-[#f97316] shadow-[0_0_20px_rgba(249,115,22,0.15)]">
                 <Laptop className="w-8 h-8 animate-bounce" />
               </div>
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold tracking-tight">Constructing Gap Audit...</h2>
-              <p className="text-slate-400 text-xs font-mono select-none">
+              <h2 className="text-2xl font-bold tracking-tight font-display">Constructing Gap Audit...</h2>
+              <p className="text-neutral-400 text-xs font-mono select-none">
                 Comparing {storeUrl || "your site"} with {competitorUrl || "competitor"}
               </p>
             </div>
 
             {/* Current step output with check icons */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 text-left font-mono text-xs space-y-3 shadow-2xl">
-              <div>
-                <span className="text-blue-500 font-bold">ANALYZER LOGS:</span>
-                <span className="text-slate-500 float-right">Step {scanStepIndex + 1}/6</span>
+            <div className="bg-[#0c0a09] border border-neutral-900 rounded-xl p-5 text-left font-mono text-xs space-y-3 shadow-2xl">
+              <div className="flex justify-between items-center">
+                <span className="text-[#f97316] font-bold tracking-wider">ANALYZER LOGS:</span>
+                <span className="text-neutral-500 float-right text-[10px]">Step {scanStepIndex + 1}/6</span>
               </div>
-              <div className="space-y-2 border-t border-slate-800 pt-3 h-28 overflow-y-auto">
+              <div className="space-y-2 border-t border-neutral-900 pt-3 h-28 overflow-y-auto">
                 {SCAN_STEPS.slice(0, scanStepIndex).map((step, idx) => (
-                  <div key={idx} className="text-emerald-400 flex items-start gap-2">
+                  <div key={idx} className="text-[#f97316] flex items-start gap-2">
                     <span>✓</span>
                     <span>{step}</span>
                   </div>
                 ))}
                 <div className="text-white flex items-start gap-2 animate-pulse">
-                  <span className="text-blue-400">⚡</span>
-                  <span className="text-slate-300 font-semibold">{SCAN_STEPS[scanStepIndex]}</span>
+                  <span className="text-[#f97316]">⚡</span>
+                  <span className="text-neutral-300 font-semibold">{SCAN_STEPS[scanStepIndex]}</span>
                 </div>
               </div>
             </div>
 
-            <p className="text-slate-500 text-[10px] uppercase tracking-widest leading-relaxed">
-              Gemini model 3.5 is compiling category benchmarks. <br />
+            <p className="text-neutral-500 text-[10px] uppercase tracking-widest leading-relaxed">
+              Gemini model is compiling e-commerce category benchmarks. <br />
               This takes about 10–15 seconds total.
             </p>
           </div>
         </div>
       )}
 
-      {/* HERO SECTION MATCHING REQUEST */}
-      <section className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800 relative py-16 px-4 sm:px-6 lg:px-8 text-white text-center select-none overflow-hidden" id="hero-banner">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/15 via-transparent to-transparent opacity-80" />
+      {/* HERO SECTION IN DARK-SUNSET SUNRISE GLOW */}
+      <section className="relative py-16 px-4 sm:px-6 lg:px-8 text-white text-center select-none overflow-hidden" id="hero-banner">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-gradient-to-b from-orange-500/10 to-transparent blur-[120px] rounded-full pointer-events-none" />
         
         <div className="relative max-w-4xl mx-auto space-y-4">
-          <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/25 rounded-full text-xs font-mono uppercase tracking-wider">
-            <Zap className="w-3.5 h-3.5" /> High-Intensity Auditor
+          <span className="inline-flex items-center gap-2 px-3 py-1 bg-[#f97316]/10 text-[#f97316] border border-[#f97316]/25 rounded-full text-[10px] font-mono uppercase tracking-wider">
+            <Zap className="w-3 h-3" /> High-Intensity Auditor
           </span>
           
-          <h1 className="text-3xl font-extrabold sm:text-5xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent max-w-3xl mx-auto font-sans">
-            See Exactly What Your Competitor Is Doing That You're Not
+          <h1 className="text-4xl sm:text-6xl tracking-tight font-display font-black text-white hover:opacity-95 transition-opacity uppercase leading-none max-w-3xl mx-auto">
+            OUTMARKET YOUR <span className="text-[#f97316]">COMPETITORS</span>
           </h1>
-          <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            Enter your active boutique and a chief competitor URL. We will scan performance ratings, layout gaps, and conversion triggers using Gemini models to construct an on-screen roadmap block.
+          <p className="text-neutral-400 text-sm sm:text-base max-w-lg mx-auto font-sans leading-relaxed">
+            AI-driven audit of conversion gaps and layout flaws.
           </p>
         </div>
       </section>
 
-      {/* THREE BENTO SHORTCUTS FOR SAMPLES */}
-      <section className="max-w-5xl mx-auto px-4 mt-8" id="quick-presets">
-        <div className="bg-slate-900/40 border border-slate-850 p-4 sm:p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-blue-500/10 text-blue-400 rounded-xl hidden sm:block">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="font-semibold text-sm text-white">Skip the scan form & try immediate showcase?</p>
-              <p className="text-xs text-slate-400">Load high-fidelity visual audits directly in one tap to test performance metrics.</p>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-2 w-full md:w-auto">
+      {/* ONE-TAP SHOWCASES SECTION */}
+      <section className="max-w-xl mx-auto px-4 mt-2" id="quick-presets">
+        <div className="space-y-3">
+          <span className="text-[#f97316] text-[10px] font-mono font-bold tracking-[0.2em] text-center uppercase block">
+            ONE-TAP SHOWCASES
+          </span>
+          
+          <div className="grid grid-cols-3 gap-2.5 max-w-md mx-auto">
             <button
               onClick={() => triggerSample("Fashion")}
-              className="flex-grow md:flex-grow-0 px-4 py-2 border border-slate-800 hover:border-slate-700 bg-slate-900 hover:bg-slate-850 text-xs font-semibold text-slate-200 hover:text-white rounded-xl transition-all cursor-pointer"
+              className="px-3 py-3 bg-[#0c0a09] border border-neutral-800 hover:border-[#f97316]/40 text-neutral-200 hover:text-white text-[10.5px] font-mono font-bold tracking-wider rounded-xl transition-all cursor-pointer hover:shadow-[0_0_12px_rgba(249,115,22,0.1)] active:scale-95"
             >
-              👗 Fashion Showcase
+              FASHION
             </button>
             <button
               onClick={() => triggerSample("Beauty")}
-              className="flex-grow md:flex-grow-0 px-4 py-2 border border-slate-800 hover:border-slate-700 bg-slate-900 hover:bg-slate-850 text-xs font-semibold text-slate-200 hover:text-white rounded-xl transition-all cursor-pointer"
+              className="px-3 py-3 bg-[#0c0a09] border border-neutral-800 hover:border-[#f97316]/40 text-neutral-200 hover:text-white text-[10.5px] font-mono font-bold tracking-wider rounded-xl transition-all cursor-pointer hover:shadow-[0_0_12px_rgba(249,115,22,0.1)] active:scale-95"
             >
-              💄 Beauty Showcase
+              BEAUTY
+            </button>
+            <button
+              onClick={() => triggerSample("Food")}
+              className="px-3 py-3 bg-[#0c0a09] border border-neutral-800 hover:border-[#f97316]/40 text-neutral-200 hover:text-white text-[10.5px] font-mono font-bold tracking-wider rounded-xl transition-all cursor-pointer hover:shadow-[0_0_12px_rgba(249,115,22,0.1)] active:scale-95"
+            >
+              FOOD
             </button>
           </div>
         </div>
       </section>
 
-      {/* OVERLAPPING HERO CARD IN FORM */}
+      {/* INTERACTIVE FORM SECTION */}
       <section className="max-w-md mx-auto px-4 py-8 relative z-10" id="main-interactive-form">
-        <div className="bg-white text-slate-950 rounded-2xl border border-slate-200 shadow-2xl p-6 sm:p-8 space-y-6">
-          <div className="space-y-1">
-            <h2 className="text-xl font-bold tracking-tight text-slate-900">Analyze My Store — Free</h2>
-            <p className="text-slate-500 text-xs">Complete the secure e-commerce indices to get audited checks.</p>
+        <div className="bg-[#0c0a09]/90 text-white rounded-2xl border border-neutral-800 shadow-[0_25px_50px_rgba(0,0,0,0.8)] p-6 sm:p-8 space-y-6 relative overflow-hidden">
+          
+          <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#f97316]/50 to-transparent" />
+          
+          <div className="text-center space-y-1">
+            <h2 className="text-xl font-bold tracking-widest text-white uppercase font-display">FREE AUDIT</h2>
+            <div className="h-[2px] w-12 bg-gradient-to-r from-[#f97316] to-[#ffaa44] mx-auto mt-2" />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          {formError && (
+            <div className="p-3 bg-red-950/25 border border-red-900/30 text-red-400 text-xs rounded-xl font-mono" id="form-error-banner">
+              ⚠️ {formError}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4 font-mono">
             
             {/* Store URL */}
-            <div className="space-y-1.5">
-              <label htmlFor="storeUrl" className="text-xs font-semibold text-slate-700 block">Your Store URL</label>
+            <div className="space-y-1">
               <input
                 id="storeUrl"
                 type="url"
                 required
-                placeholder="https://yourstore.com"
+                placeholder="YOUR STORE URL"
                 value={storeUrl}
                 onChange={(e) => setStoreUrl(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-blue-500 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/10 text-slate-900"
+                className="w-full bg-[#040201] border border-neutral-800 hover:border-neutral-700 focus:border-[#f97316] focus:ring-1 focus:ring-[#f97316]/20 px-4 py-3 rounded-xl text-xs focus:outline-none transition-all uppercase tracking-wider text-white placeholder:text-neutral-600 block"
               />
             </div>
 
             {/* Competitor URL */}
-            <div className="space-y-1.5">
-              <label htmlFor="competitorUrl" className="text-xs font-semibold text-slate-700 block">Competitor URL</label>
+            <div className="space-y-1">
               <input
                 id="competitorUrl"
                 type="url"
                 required
-                placeholder="https://competitor.com"
+                placeholder="COMPETITOR URL"
                 value={competitorUrl}
                 onChange={(e) => setCompetitorUrl(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-blue-500 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/10 text-slate-900"
+                className="w-full bg-[#040201] border border-neutral-800 hover:border-neutral-700 focus:border-[#f97316] focus:ring-1 focus:ring-[#f97316]/20 px-4 py-3 rounded-xl text-xs focus:outline-none transition-all uppercase tracking-wider text-white placeholder:text-neutral-600 block"
               />
             </div>
 
             {/* Category selection */}
-            <div className="space-y-1.5">
-              <label htmlFor="category" className="text-xs font-semibold text-slate-700 block">Your Product Category</label>
+            <div className="space-y-1 relative">
               <select
                 id="category"
                 required
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 text-slate-800 hover:border-slate-300 focus:border-blue-500 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/10 appearance-none cursor-pointer"
+                className="w-full bg-[#040201] border border-neutral-800 text-neutral-300 hover:border-neutral-700 focus:border-[#f97316] focus:ring-1 focus:ring-[#f97316]/20 px-4 py-3 rounded-xl text-xs focus:outline-none transition-all appearance-none cursor-pointer uppercase tracking-wider font-mono block hover:animate-none"
               >
-                <option value="" disabled>Select Your Category</option>
-                <option value="Fashion">Fashion & Apparel</option>
-                <option value="Beauty">Beauty & Cosmetics</option>
-                <option value="Electronics">Electronics & Hardware</option>
-                <option value="Home">Home & Living decor</option>
-                <option value="Other">Other Retail Niche</option>
+                <option value="" disabled className="text-neutral-600 bg-neutral-950">SELECT CATEGORY</option>
+                <option value="Fashion" className="bg-[#0c0a09] text-white">Fashion & Apparel</option>
+                <option value="Beauty" className="bg-[#0c0a09] text-white">Beauty & Cosmetics</option>
+                <option value="Food" className="bg-[#0c0a09] text-white">Food & Beverage / Grocery</option>
+                <option value="Electronics" className="bg-[#0c0a09] text-white">Electronics & Hardware</option>
+                <option value="Home" className="bg-[#0c0a09] text-white">Home & Living decor</option>
+                <option value="Other" className="bg-[#0c0a09] text-white">Other Retail Niche</option>
               </select>
-            </div>
-
-            {/* Contact Name */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <label htmlFor="name" className="text-xs font-semibold text-slate-700 block">Your Name</label>
-                <input
-                  id="name"
-                  type="text"
-                  required
-                  placeholder="Your Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-blue-500 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none text-slate-900"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label htmlFor="email" className="text-xs font-semibold text-slate-700 block">Your Email</label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  placeholder="your@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-blue-500 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none text-slate-900"
-                />
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-neutral-500">
+                <CornerDownRight className="w-3.5 h-3.5" />
               </div>
             </div>
 
-            {/* Error output */}
-            {formError && (
-              <p className="text-xs text-red-600 bg-red-50 border border-red-100 p-2.5 rounded-xl text-center font-medium">
-                ⚠️ {formError}
-              </p>
-            )}
+            {/* Contact Grid: Name & Email */}
+            <div className="grid grid-cols-2 gap-3">
+              <input
+                id="name"
+                type="text"
+                required
+                placeholder="NAME"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full bg-[#040201] border border-neutral-800 hover:border-neutral-700 focus:border-[#f97316] focus:ring-1 focus:ring-[#f97316]/20 px-4 py-3 rounded-xl text-xs focus:outline-none transition-all uppercase tracking-wider text-white placeholder:text-neutral-600"
+              />
+              <input
+                id="email"
+                type="email"
+                required
+                placeholder="EMAIL"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-[#040201] border border-neutral-800 hover:border-neutral-700 focus:border-[#f97316] focus:ring-1 focus:ring-[#f97316]/20 px-4 py-3 rounded-xl text-xs focus:outline-none transition-all uppercase tracking-wider text-white placeholder:text-neutral-600"
+              />
+            </div>
 
-            {/* Action button */}
+            {/* START ANALYSIS button */}
             <button
-              id="submitBtn"
+              id="start-analysis-submit"
               type="submit"
-              disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl text-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-blue-500/15"
+              className="w-full bg-[#f97316] hover:bg-[#ea580c] py-4 rounded-xl text-black font-display font-black text-[12px] tracking-[0.18em] transition-all shadow-[0_4px_20px_rgba(249,115,22,0.25)] hover:shadow-[0_4px_25px_rgba(249,115,22,0.45)] uppercase flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
             >
-              <span>Analyze My Store →</span>
+              START ANALYSIS <ArrowRight className="w-4 h-4 ml-1" />
             </button>
-
           </form>
         </div>
+      </section>
 
-        {/* GOOGLE APPS SCRIPT LINK STATUS CARD */}
-        <div className="mt-8 bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4 shadow-xl text-left" id="appscript-status-card">
-          <div className="flex items-center justify-between gap-3 border-b border-slate-800 pb-3">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-blue-500/10 text-blue-400 rounded-lg">
-                <Link className="w-4 h-4" />
+      {/* GOOGLE SHEET / APPS SCRIPT SYNC STATUS BANNER */}
+      <section className="max-w-xl mx-auto px-4 pb-8" id="google-apps-script-monitor">
+        <div className="bg-[#0c0a09] border border-neutral-900 rounded-2xl p-6 space-y-4 font-mono">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-[#f97316]/10 text-[#f97316] rounded-xl">
+                <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">Google Apps Script Status</h3>
-                <p className="text-[10px] text-slate-500 font-mono">Lead spreadsheet synchronization</p>
+                <p className="font-bold text-sm text-white font-display uppercase tracking-wider">Sheets Lead Sync Integration</p>
+                {appScriptConfig && appScriptConfig.configured ? (
+                  <p className="text-xs text-neutral-400 flex items-center gap-1.5 mt-0.5">
+                    <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    LIVE Sync Active: <span className="text-emerald-400 select-all underline font-semibold text-[10px] truncate max-w-[200px]" title={appScriptConfig.url || ""}>{appScriptConfig.url}</span>
+                  </p>
+                ) : (
+                  <p className="text-xs text-neutral-400 flex items-center gap-1.5 mt-0.5">
+                    <span className="inline-block w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                    Pending Web Script Connection
+                  </p>
+                )}
               </div>
             </div>
-            {appScriptConfig === null ? (
-              <span className="px-2 py-0.5 bg-slate-800 text-slate-400 rounded-md text-[10px] font-mono animate-pulse">
-                Diagnosing...
-              </span>
-            ) : appScriptConfig.configured ? (
-              <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-md text-[10px] font-mono flex items-center gap-1">
-                <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping" />
-                Linked & Active
-              </span>
-            ) : (
-              <span className="px-2 py-0.5 bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 rounded-md text-[10px] font-mono">
-                Not Connected
-              </span>
-            )}
+            
+            <div className="flex gap-2">
+              <button
+                onClick={handleTestAppScript}
+                disabled={isTestingAppScript}
+                className="px-3 py-1.5 bg-[#040201] border border-neutral-800 hover:border-[#f97316]/30 text-neutral-300 hover:text-white rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
+              >
+                {isTestingAppScript ? (
+                  <>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Verifying...
+                  </>
+                ) : (
+                  <>Verify Setup</>
+                )}
+              </button>
+              
+              <button
+                onClick={() => setShowSetupGuide(!showSetupGuide)}
+                className="px-3 py-1.5 bg-neutral-900 hover:bg-[#f97316]/15 border border-neutral-800 hover:border-[#f97316]/50 text-[#f97316] rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer active:scale-95"
+              >
+                {showSetupGuide ? "Hide Guide" : "Setup Script"}
+              </button>
+            </div>
           </div>
 
-          {appScriptConfig && (
-            <div className="space-y-3">
-              {appScriptConfig.configured ? (
-                <div className="space-y-2">
-                  <div className="p-3 bg-slate-950 rounded-lg border border-slate-850 space-y-1.5">
-                    <span className="text-[10px] font-mono text-slate-400">Target Web App Endpoint:</span>
-                    <p className="text-xs font-mono text-blue-400 break-all select-all">
-                      {appScriptConfig.url}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    <button
-                      type="button"
-                      onClick={handleTestAppScript}
-                      disabled={isTestingAppScript}
-                      className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 text-white rounded-lg text-xs font-semibold tracking-tight transition-all flex items-center gap-1.5 cursor-pointer"
-                    >
-                      {isTestingAppScript ? (
-                        <>
-                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                          <span>Pinging Endpoint...</span>
-                        </>
-                      ) : (
-                        <>
-                          <RefreshCw className="w-3.5 h-3.5" />
-                          <span>Test Sync Connection</span>
-                        </>
-                      )}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowSetupGuide(!showSetupGuide)}
-                      className="px-3 py-1.5 border border-slate-800 hover:border-slate-700 hover:bg-slate-850 text-slate-300 rounded-lg text-xs font-semibold transition-all cursor-pointer"
-                    >
-                      {showSetupGuide ? "Hide Setup Steps" : "View Setup Steps"}
-                    </button>
-                  </div>
+          {/* Test results banner */}
+          {testResult && (
+            <div className={`p-4 rounded-xl border text-xs font-mono animate-fadeIn ${
+              (testResult.status === "success" || testResult.status === "connected")
+                ? "bg-emerald-950/20 border-emerald-900/30 text-emerald-400" 
+                : "bg-red-950/20 border-red-900/30 text-red-400"
+            }`}>
+              <p className="font-bold uppercase tracking-wider">{(testResult.status === "success" || testResult.status === "connected") ? "✓ CONNECTION VERIFIED" : "✗ SYNC ENCOUNTERED ERROR"}</p>
+              <p className="mt-1">{testResult.message}</p>
+              {testResult.snippet && (
+                <div className="mt-2.5 p-2 bg-black/60 rounded-lg text-[10px] text-neutral-300 max-h-32 overflow-y-auto border border-neutral-900 select-all">
+                  Response Log: {testResult.snippet}
                 </div>
-              ) : (
-                <div className="space-y-3">
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Automatically write client audits and lead info directly into your custom spreadsheet rows when scans run!
-                  </p>
+              )}
+            </div>
+          )}
+
+          {/* App Script Setup Guide */}
+          {showSetupGuide && (
+            <div className="border-t border-neutral-900 pt-5 space-y-4 animate-fadeIn text-xs text-neutral-300">
+              <h3 className="font-bold text-white uppercase tracking-widest font-display text-xs">Google Apps Script Configuration Tutorial</h3>
+              <p className="leading-relaxed text-neutral-400">
+                To capture every single generated audit report and sync customer lead requests instantly into a Google Sheet in the background, complete this 2-minute connection:
+              </p>
+              
+              <div className="space-y-2">
+                <p className="font-semibold text-[#f97316] font-mono uppercase tracking-wider">Step 1: Code Deployment</p>
+                <div className="bg-[#040201] border border-neutral-900 rounded-xl p-4.5 space-y-3 relative">
+                  <span className="text-[10px] font-mono text-neutral-500 uppercase block">Copy Script Engine (doPost standard):</span>
                   <button
-                    type="button"
-                    onClick={() => setShowSetupGuide(!showSetupGuide)}
-                    className="w-full py-2 border border-blue-500/20 hover:border-blue-500/40 bg-blue-500/5 hover:bg-blue-500/10 text-blue-400 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    onClick={handleCopyCode}
+                    className="absolute top-4 right-4 p-2 bg-[#0c0a09] hover:bg-[#f97316]/20 border border-neutral-800 hover:border-[#f97316] rounded-lg text-neutral-400 hover:text-white transition-all cursor-pointer"
+                    title="Copy Apps Script Source Code"
                   >
-                    <FileCode2 className="w-4 h-4" />
-                    <span>How to set up and link Google Sheets</span>
+                    {copiedCode ? <CheckSquare className="w-4 h-4 text-[#f97316]" /> : <Copy className="w-4 h-4" />}
                   </button>
+                  <pre className="text-[10.5px] font-mono text-neutral-400 overflow-x-auto max-h-40 whitespace-pre scrollbar">
+                    {APPS_SCRIPT_CODE}
+                  </pre>
                 </div>
-              )}
+              </div>
 
-              {/* TEST TRIGGER RESULT BARS */}
-              {testResult && (
-                <div className={`p-4 rounded-xl text-xs space-y-2 border ${
-                  testResult.status === "connected" 
-                    ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-300"
-                    : "bg-red-500/5 border-red-500/20 text-red-300"
-                }`} id="appscript-test-feedback">
-                  <div className="flex items-center gap-2 font-bold">
-                    {testResult.status === "connected" ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-red-400" />
-                    )}
-                    <span>
-                      {testResult.status === "connected" ? "✓ CONNECTION VERIFIED" : "❌ INTER-LINK ERROR"}
-                    </span>
-                  </div>
-                  <p className="leading-relaxed opacity-90">{testResult.message}</p>
-                  {testResult.snippet && (
-                    <div className="bg-slate-950/70 p-2 border border-slate-900 rounded-lg font-mono text-[10px] break-all leading-normal text-slate-400">
-                      Response: {testResult.snippet}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* DYNAMIC EXPANDABLE STEP SETUP GUIDE */}
-              {showSetupGuide && (
-                <div className="border-t border-slate-800 pt-4 space-y-4 animate-fadeIn" id="appscript-guide-details">
-                  <h4 className="text-xs font-bold text-white flex items-center gap-1.5">
-                    <FileCode2 className="w-4 h-4 text-blue-400" />
-                    Quick Spreadsheet Setup Guide
-                  </h4>
-                  
-                  <ol className="text-xs text-slate-400 space-y-3 list-decimal pl-4 leading-relaxed">
-                    <li>
-                      Create a new <strong>Google Sheet</strong>.
-                    </li>
-                    <li>
-                      Go to the upper menu, choose <strong>Extensions &gt; Apps Script</strong>.
-                    </li>
-                    <li>
-                      Delete any default sample code, and paste the code template below:
-                    </li>
-                  </ol>
-
-                  {/* Copy code container */}
-                  <div className="space-y-1.5" id="code-copy-container">
-                    <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 bg-slate-950 px-3 py-1.5 rounded-t-lg border-b border-slate-900">
-                      <span>apps-script-macro.js</span>
-                      <button
-                        type="button"
-                        onClick={handleCopyCode}
-                        className="text-xs hover:text-white transition-colors flex items-center gap-1 px-1.5 py-0.5 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded cursor-pointer"
-                      >
-                        <Copy className="w-3 h-3" />
-                        <span>{copiedCode ? "Copied!" : "Copy Code"}</span>
-                      </button>
-                    </div>
-                    <pre className="bg-slate-950 text-slate-300 p-3 rounded-b-lg font-mono text-[9px] max-h-48 overflow-y-auto leading-normal whitespace-pre border border-slate-850">
-                      {APPS_SCRIPT_CODE}
-                    </pre>
-                  </div>
-
-                  <ol className="text-xs text-slate-400 space-y-3 list-decimal pl-4 leading-relaxed" start={4}>
-                    <li>
-                      In Google Apps Script, click <strong>Deploy &gt; New Deployment</strong> (upper right).
-                    </li>
-                    <li>
-                      Select type <strong>Web App</strong>. Set "Execute as" to <strong>Me</strong> and "Who has access" to <strong>Anyone</strong> (this is critical for authorization).
-                    </li>
-                    <li>
-                      Click <strong>Deploy</strong>, grant database access requests when prompted, and copy the final <strong>Web App URL</strong> (which ends in <code className="text-blue-400 font-mono">/exec</code>).
-                    </li>
-                    <li>
-                      Paste this URL in your sandbox configuration or update the <code className="text-blue-400 font-mono">APP_URL</code> environment variable in your AI Studio settings!
-                    </li>
-                  </ol>
-                </div>
-              )}
+              <div className="space-y-2">
+                <p className="font-semibold text-[#f97316] font-mono uppercase tracking-wider">Step 2: Activation Setup</p>
+                <ol className="list-decimal pl-5 space-y-2.5 text-neutral-400 leading-relaxed font-mono text-[11px]">
+                  <li>
+                    Open your Google Sheet, and navigate to <strong className="text-white">Extensions &gt; Apps Script</strong>.
+                  </li>
+                  <li>
+                    Delete any existing template script contents inside the code workspace, paste the copied source code above, and save the script project.
+                  </li>
+                  <li>
+                    In Apps Script, click <strong className="text-white">Deploy &gt; New Deployment</strong> (upper right corner).
+                  </li>
+                  <li>
+                    Select deployment type <strong className="text-white">Web App</strong>. Set "Execute as" to <strong className="text-white">Me</strong> and "Who has access" to <strong className="text-white">Anyone</strong> (critical for background pipeline authorization).
+                  </li>
+                  <li>
+                    Click <strong className="text-white">Deploy</strong>, authorize spreadsheet permission dialog alerts when prompted, and copy the final <strong className="text-white">Web App URL</strong> (which ends in `/exec`).
+                  </li>
+                  <li>
+                    Create a new file named <strong className="text-white">.env</strong> in your workspace containing: <br />
+                    <code className="text-[#f97316] select-all bg-black px-1.5 py-0.5 rounded font-bold text-[10.5px]">GOOGLE_APPS_SCRIPT_URL=YOUR_COPIED_URL</code>
+                  </li>
+                </ol>
+              </div>
             </div>
           )}
         </div>
       </section>
 
-      {/* NEWSLETTER AT FOOT OF CHIP */}
-      <section className="bg-slate-900/40 border-t border-slate-850 py-16 px-4 text-center text-white" id="newsletter-guide">
+      {/* THE GROWTH GUIDE CHEAT SHEET DOWNLOAD */}
+      <section className="border-t border-neutral-900 py-16 px-4 text-center text-white space-y-6" id="newsletter-guide">
         <div className="max-w-2xl mx-auto space-y-6">
-          <div className="inline-flex p-3 bg-blue-500/10 text-blue-400 rounded-full">
-            <CheckSquare className="w-6 h-6" />
+          <div className="inline-flex p-4 bg-[#f97316]/10 text-[#f97316] rounded-full border border-[#f97316]/20 shadow-[0_0_15px_rgba(249,115,22,0.1)]">
+            <CheckSquare className="w-6 h-6 animate-pulse" />
           </div>
-          <h2 className="text-2xl font-bold tracking-tight">Need immediate offline reading?</h2>
-          <p className="text-slate-400 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
-            Download our curated E-commerce Conversion Cheat Sheet details detailing the top 50 Shopify tactics to boost cart checkout metrics.
+          <h2 className="text-2xl font-black uppercase font-display tracking-widest text-white">GROWTH GUIDE</h2>
+          <p className="text-neutral-400 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
+            Get our elite 50-point Shopify conversion playbook for offline reading.
           </p>
           <div className="flex justify-center gap-3">
             {!pdfDownloaded ? (
@@ -584,13 +531,13 @@ function doGet(e) {
                   setPdfDownloaded(true);
                   setTimeout(() => setPdfDownloaded(false), 6000);
                 }}
-                className="px-6 py-2.5 bg-white text-slate-950 hover:bg-slate-100 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer"
+                className="px-6 py-3 bg-[#0c0a09] hover:bg-neutral-900 border border-neutral-800 hover:border-[#f97316]/30 text-white hover:text-[#f97316] rounded-xl text-[11px] font-bold font-mono tracking-widest uppercase transition-all cursor-pointer shadow-lg active:scale-95 animate-pulse hover:animate-none"
               >
-                Download PDF Playbook
+                DOWNLOAD PDF PLAYBOOK
               </button>
             ) : (
-              <p className="bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 px-5 py-3 rounded-xl text-xs font-semibold max-w-md">
-                ✓ Playbook ready! Browse the <span className="underline">CRO Checklist</span> tab above for a fully interactive checking toolkit!
+              <p className="bg-emerald-950/20 border border-emerald-900/30 text-emerald-400 px-5 py-3 rounded-xl text-xs font-mono font-semibold max-w-md animate-fadeIn">
+                ✓ Playbook Ready! Check the interactive checklist items in the <span className="underline">CRO Checklist</span> tab above.
               </p>
             )}
           </div>

@@ -216,6 +216,50 @@ function generateDeterministicAnalysis(storeUrl: string, competitorUrl: string, 
       ],
       summary: `Product trust badges and skin-matching diagnostics are the main conversions drivers for beauty. Deploying custom guides on ${storeHost} will alleviate customer purchase uncertainty.`
     },
+    Food: {
+      gaps: [
+        {
+          area: "Taste, Sizing & Volume Bundler",
+          severity: "High",
+          description: `Consumable buyers select flavors and package quantities. Your listings force shoppers to select sizes manually via plain grids, whereas ${competitorHost} displays a highly persuasive radio-button bundle selector highlighting saving margins (Save 15% on Multi-Packs).`,
+          yourStatus: "Flat dropdown menus for product flavor options without bundle incentives.",
+          competitorStatus: "Polished button swatches grouped by serving sizes showing tiered discount savings clearly.",
+          impactScore: 92,
+          actionItem: "Implement an interactive visual subscription/bundle picker on your product display screens."
+        },
+        {
+          area: "Purity, Sourcing & FDA Badges",
+          severity: "High",
+          description: `Food quality confidence requires maximum certification visibility. ${competitorHost} showcases cGMP certification scales, USDA Organic emblems, and allergen-free badges directly above the CTA folder, while your store buries ingredient compliance details in the footer files.`,
+          yourStatus: "Ingredient compliance and allergen sheets presented as wall-of-text footnotes.",
+          competitorStatus: "USDA Organic, NSF Certified for Sport, and GMP stamp badges prominently stacked below purchase buttons.",
+          impactScore: 89,
+          actionItem: "Rework your product detail pages to group nutritional credentials into legible visual stamp grids."
+        },
+        {
+          area: "Subscribe & Save Automatic Shipping Intervals",
+          severity: "Medium",
+          description: `Repeated consumption requires regular replenishment. Your store utilizes single checkouts only. ${competitorHost} converts 75% of buyers into predictable monthly recurring streams via comfortable automated intervals.`,
+          yourStatus: "One-off checkout workflows only.",
+          competitorStatus: "Subscribe & Save discount features with customized shipment logs intervals (30, 45, or 60 days).",
+          impactScore: 82,
+          actionItem: "Integrate subscription apps like Recharge or Bold Subscriptions to offer continuous replenishment pipelines."
+        }
+      ],
+      immediate: [
+        "Embed dietary tags (Gluten-Free, Dairy-Free, Keto) directly on category selection chips.",
+        "Include 3 formulation stamp badges showcasing FDA-facility registry below checkout buy buttons."
+      ],
+      medium: [
+        "Deploy a tiered volume discount bundler suggesting multi-month servings to double AOV.",
+        "Add short interactive nutrition label facts and sourcing charts over scrolling tabs."
+      ],
+      longTerm: [
+        "Establish an interactive dietary questionnaire recommender to match users to personalized meal systems.",
+        "Add post-purchase automatic subscription incentives targeting guest order lists."
+      ],
+      summary: `Nutritional purity labels, certification stamps, and subscribe-and-save volume discount structures are absolutely vital for food and beverage. Transforming PDP designs on ${storeHost} will grow recurring retention exponentially.`
+    },
     Electronics: {
       gaps: [
         {

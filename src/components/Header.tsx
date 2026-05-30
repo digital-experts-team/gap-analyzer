@@ -9,18 +9,18 @@ interface HeaderProps {
 
 export default function Header({ activeTab, setActiveTab, hasScanResult }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-slate-900/95 border-b border-slate-800 text-white shadow-lg" id="app-header">
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-black/95 border-b border-neutral-950 text-white shadow-lg" id="app-header">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-3">
-            <div className="bg-blue-600 p-2 rounded-xl text-white shadow-md shadow-blue-500/20 flex items-center justify-center">
+            <div className="bg-[#f97316] p-2 rounded-xl text-black shadow-md shadow-[#f97316]/20 flex items-center justify-center">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <span className="font-sans font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-blue-400 bg-clip-text text-transparent">
-                GapAnalyzer<span className="text-blue-500">.AI</span>
+              <span className="font-display font-bold text-lg tracking-tight text-white">
+                GapAnalyzer<span className="text-[#f97316]">.AI</span>
               </span>
-              <p className="font-mono text-[9px] tracking-widest text-slate-400 uppercase hidden sm:block">
+              <p className="font-mono text-[9px] tracking-widest text-[#f97316]/85 uppercase hidden sm:block">
                 E-Commerce Optimization Core
               </p>
             </div>
@@ -30,10 +30,10 @@ export default function Header({ activeTab, setActiveTab, hasScanResult }: Heade
             <button
               id="tab-btn-scan"
               onClick={() => setActiveTab("scan")}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider font-mono transition-all cursor-pointer ${
                 activeTab === "scan"
-                  ? "bg-slate-800 text-blue-400 border-b-2 border-blue-500"
-                  : "text-slate-300 hover:bg-slate-800/50 hover:text-white"
+                  ? "bg-neutral-900 text-[#f97316] border-b-2 border-[#f97316]"
+                  : "text-neutral-400 hover:bg-neutral-900/50 hover:text-white"
               }`}
             >
               <BarChart3 className="w-4 h-4" />
@@ -43,23 +43,23 @@ export default function Header({ activeTab, setActiveTab, hasScanResult }: Heade
             <button
               id="tab-btn-checklist"
               onClick={() => setActiveTab("checklist")}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider font-mono transition-all cursor-pointer ${
                 activeTab === "checklist"
-                  ? "bg-slate-800 text-blue-400 border-b-2 border-blue-500"
-                  : "text-slate-300 hover:bg-slate-800/50 hover:text-white"
+                  ? "bg-neutral-900 text-[#f97316] border-b-2 border-[#f97316]"
+                  : "text-neutral-400 hover:bg-neutral-900/50 hover:text-white"
               }`}
             >
               <CheckSquare className="w-4 h-4" />
-              <span>CRO Checklist</span>
+              <span>Checking Tool</span>
             </button>
 
             <button
               id="tab-btn-help"
               onClick={() => setActiveTab("help")}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider font-mono transition-all cursor-pointer ${
                 activeTab === "help"
-                  ? "bg-slate-800 text-blue-400 border-b-2 border-blue-500"
-                  : "text-slate-300 hover:bg-slate-800/50 hover:text-white"
+                  ? "bg-neutral-900 text-[#f97316] border-b-2 border-[#f97316]"
+                  : "text-neutral-400 hover:bg-neutral-900/50 hover:text-white"
               }`}
             >
               <HelpCircle className="w-4 h-4" />
